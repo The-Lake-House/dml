@@ -4,7 +4,7 @@
 # force is used.
 #
 
-SPARK_CONF='--conf spark.sql.parquet.compression.codec=gzip --conf write.parquet.compression.codec=gzip'
+SPARK_CONF='--conf spark.sql.parquet.compression.codec=gzip'
 
 SQL_INSERT='INSERT INTO lineitem SELECT /* REPARTITION(1) */ * FROM tpch_hive.lineitem;'
 SQL_DELETE='DELETE FROM lineitem WHERE l_orderkey = 1;'
