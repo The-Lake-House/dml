@@ -26,9 +26,11 @@ for FORMAT in iceberg/mor delta/withoutDeletionVectors; do
     rm -rf "$OUTPUT_DIR"
     mkdir -p "$OUTPUT_DIR"
 
+    SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS $FORMAT.tpch_$FORMAT WITH (location = 's3a://tpch/$FORMAT');"
     SQL_CREATE_TABLE="CREATE TABLE lineitem $TABLE_PROPS AS SELECT * FROM tpch.tiny.lineitem;"
 
     # Setup
+    $TRINO_HOME/bin/trino $TRINO_SESSION --execute="$SQL_CREATE_SCHEMA"
     $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 
     # CREATE
@@ -63,5 +65,7 @@ for FORMAT in iceberg/mor delta/withoutDeletionVectors; do
 done
 
 # Create Hive table for Hudi in Spark
+SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS hive.tpch_hive WITH (location = 's3a://tpch/hive');"
+$TRINO_HOME/bin/trino $TRINO_SESSION --execute="$SQL_CREATE_SCHEMA"
 $TRINO_HOME/bin/trino --catalog=hive --schema=tpch_hive $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 $TRINO_HOME/bin/trino --catalog=hive --schema=tpch_hive $TRINO_SESSION --execute="$SQL_CREATE_TABLE"

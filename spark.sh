@@ -46,9 +46,11 @@ for FORMAT in hudi/cow hudi/mor iceberg/cow iceberg/mor delta/withoutDeletionVec
     rm -rf "$OUTPUT_DIR"
     mkdir -p "$OUTPUT_DIR"
 
+    SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS tpch_$FORMAT LOCATION 's3a://tpch/$FORMAT';"
     SQL_CREATE_TABLE="CREATE TABLE lineitem USING $FORMAT $TABLE_PROPS AS SELECT /* REPARTITION(1) */ * FROM tpch_hive.lineitem;"
 
     # Setup
+    spark-sql-hms-$FORMAT $SPARK_CONF -e "$SQL_CREATE_SCHEMA"
     spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
     mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
 
