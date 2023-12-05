@@ -8,18 +8,19 @@ SQL_UPDATE='UPDATE lineitem SET l_quantity = 0.0 WHERE l_orderkey = 3;'
 SQL_MERGE='MERGE INTO lineitem AS target USING tpch.tiny.lineitem AS source ON target.l_orderkey = source.l_orderkey AND target.l_partkey = source.l_partkey AND target.l_suppkey = source.l_suppkey WHEN MATCHED AND target.l_orderkey = 1 THEN DELETE WHEN MATCHED AND target.l_orderkey = 3 THEN UPDATE SET l_quantity = 0.0;'
 SQL_DROP_TABLE='DROP TABLE IF EXISTS lineitem;'
 
-for FORMAT in iceberg/mor delta/withoutDeletionVectors; do
+for VARIANT in iceberg/mor delta/withoutDeletionVectors; do
 
-    if [[ "$FORMAT" == 'iceberg/mor' ]]; then
-        OUTPUT_DIR="${FORMAT}/trino"
+    if [[ "$VARIANT" == 'iceberg/mor' ]]; then
+        OUTPUT_DIR="${VARIANT}/trino"
         FORMAT=iceberg
         TABLE_PROPS=''
-    elif [[ "$FORMAT" == 'delta/withoutDeletionVectors' ]]; then
-        OUTPUT_DIR="${FORMAT}/trino"
+    elif [[ "$VARIANT" == 'delta/withoutDeletionVectors' ]]; then
+        OUTPUT_DIR="${VARIANT}/trino"
         FORMAT=delta
         TABLE_PROPS=''
     else
-        OUTPUT_DIR="${FORMAT}/trino"
+        OUTPUT_DIR="${VARIANT}/trino"
+        FORMAT="$VARIANT"
         TABLE_PROPS=''
     fi
 

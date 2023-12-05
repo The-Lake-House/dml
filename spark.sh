@@ -12,34 +12,35 @@ SQL_UPDATE='UPDATE lineitem SET l_quantity = 0.0 WHERE l_orderkey = 3;'
 SQL_MERGE='MERGE INTO lineitem AS target USING tpch_hive.lineitem AS source ON target.l_orderkey = source.l_orderkey AND target.l_partkey = source.l_partkey AND target.l_suppkey = source.l_suppkey WHEN MATCHED AND target.l_orderkey = 1 THEN DELETE WHEN MATCHED AND target.l_orderkey = 3 THEN UPDATE SET l_quantity = 0.0;'
 SQL_DROP_TABLE='DROP TABLE IF EXISTS lineitem;'
 
-for FORMAT in hudi/cow hudi/mor iceberg/cow iceberg/mor delta/withoutDeletionVectors delta/withDeletionVectors; do
+for VARIANT in hudi/cow hudi/mor iceberg/cow iceberg/mor delta/withoutDeletionVectors delta/withDeletionVectors; do
 
-    if [[ "$FORMAT" == 'hudi/cow' ]]; then
-        OUTPUT_DIR="${FORMAT}/spark"
+    if [[ "$VARIANT" == 'hudi/cow' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=hudi
         TABLE_PROPS="TBLPROPERTIES (type = 'cow')"
-    elif [[ "$FORMAT" == 'hudi/mor' ]]; then
-        OUTPUT_DIR="${FORMAT}/spark"
+    elif [[ "$VARIANT" == 'hudi/mor' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=hudi
         TABLE_PROPS="TBLPROPERTIES (type = 'mor')"
-    elif [[ "$FORMAT" == 'iceberg/cow' ]]; then
-        OUTPUT_DIR="${FORMAT}/spark"
+    elif [[ "$VARIANT" == 'iceberg/cow' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=iceberg
         TABLE_PROPS="TBLPROPERTIES (write.delete.mode = 'copy-on-write', write.update.mode = 'copy-on-write', write.merge.mode = 'copy-on-write', compression = 'gzip')"
-    elif [[ "$FORMAT" == 'iceberg/mor' ]]; then
-        OUTPUT_DIR="${FORMAT}/spark"
+    elif [[ "$VARIANT" == 'iceberg/mor' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=iceberg
         TABLE_PROPS="TBLPROPERTIES (write.delete.mode = 'merge-on-read', write.update.mode = 'merge-on-read', write.merge.mode = 'merge-on-read', compression = 'gzip')"
-    elif [[ "$FORMAT" == 'delta/withoutDeletionVectors' ]]; then
-        OUTPUT_DIR="${FORMAT}/spark"
+    elif [[ "$VARIANT" == 'delta/withoutDeletionVectors' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=delta
         TABLE_PROPS=""
-    elif [[ "$FORMAT" == 'delta/withDeletionVectors' ]]; then
-        OUTPUT_DIR="${FORMAT}/spark"
+    elif [[ "$VARIANT" == 'delta/withDeletionVectors' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=delta
         TABLE_PROPS="TBLPROPERTIES (delta.enableDeletionVectors = true)"
     else
-        OUTPUT_DIR="${FORMAT}/spark"
+        OUTPUT_DIR="${VARIANT}/spark"
+        FORMAT="${VARIANT}"
         TABLE_PROPS=''
     fi
 
