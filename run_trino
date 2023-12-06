@@ -7,13 +7,13 @@ SQL_DELETE='DELETE FROM lineitem WHERE l_orderkey = 1;'
 SQL_UPDATE='UPDATE lineitem SET l_quantity = 0.0 WHERE l_orderkey = 3;'
 SQL_DROP_TABLE='DROP TABLE IF EXISTS lineitem;'
 
-for VARIANT in iceberg/mor delta/withoutDeletionVectors; do
+for VARIANT in iceberg_mor delta_no_deletion_vectors; do
 
-    if [[ "$VARIANT" == 'iceberg/mor' ]]; then
+    if [[ "$VARIANT" == 'iceberg_mor' ]]; then
         OUTPUT_DIR="${VARIANT}/trino"
         FORMAT=iceberg
         TABLE_PROPS=''
-    elif [[ "$VARIANT" == 'delta/withoutDeletionVectors' ]]; then
+    elif [[ "$VARIANT" == 'delta_no_deletion_vectors' ]]; then
         OUTPUT_DIR="${VARIANT}/trino"
         FORMAT=delta
         TABLE_PROPS=''
