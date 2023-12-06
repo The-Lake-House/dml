@@ -5,7 +5,6 @@ TRINO_SESSION='--session=hive.hive_storage_format=PARQUET --session=delta.compre
 SQL_INSERT='INSERT INTO lineitem SELECT * FROM tpch.tiny.lineitem;'
 SQL_DELETE='DELETE FROM lineitem WHERE l_orderkey = 1;'
 SQL_UPDATE='UPDATE lineitem SET l_quantity = 0.0 WHERE l_orderkey = 3;'
-SQL_MERGE='MERGE INTO lineitem AS target USING tpch.tiny.lineitem AS source ON target.l_orderkey = source.l_orderkey AND target.l_partkey = source.l_partkey AND target.l_suppkey = source.l_suppkey WHEN MATCHED AND target.l_orderkey = 1 THEN DELETE WHEN MATCHED AND target.l_orderkey = 3 THEN UPDATE SET l_quantity = 0.0;'
 SQL_DROP_TABLE='DROP TABLE IF EXISTS lineitem;'
 
 for VARIANT in iceberg/mor delta/withoutDeletionVectors; do
@@ -56,12 +55,6 @@ for VARIANT in iceberg/mor delta/withoutDeletionVectors; do
     $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_UPDATE"
     mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/update"
     $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
-
-    # MERGE
-    #$TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
-    #$TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_MERGE"
-    #mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/merge"
-    #$TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 
 done
 

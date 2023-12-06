@@ -9,7 +9,6 @@ SPARK_CONF='--conf spark.sql.parquet.compression.codec=gzip'
 SQL_INSERT='INSERT INTO lineitem SELECT /* REPARTITION(1) */ * FROM tpch_hive.lineitem;'
 SQL_DELETE='DELETE FROM lineitem WHERE l_orderkey = 1;'
 SQL_UPDATE='UPDATE lineitem SET l_quantity = 0.0 WHERE l_orderkey = 3;'
-SQL_MERGE='MERGE INTO lineitem AS target USING tpch_hive.lineitem AS source ON target.l_orderkey = source.l_orderkey AND target.l_partkey = source.l_partkey AND target.l_suppkey = source.l_suppkey WHEN MATCHED AND target.l_orderkey = 1 THEN DELETE WHEN MATCHED AND target.l_orderkey = 3 THEN UPDATE SET l_quantity = 0.0;'
 SQL_DROP_TABLE='DROP TABLE IF EXISTS lineitem;'
 
 for VARIANT in hudi/cow hudi/mor iceberg/cow iceberg/mor delta/withoutDeletionVectors delta/withDeletionVectors; do
@@ -81,12 +80,5 @@ for VARIANT in hudi/cow hudi/mor iceberg/cow iceberg/mor delta/withoutDeletionVe
     mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/update"
     spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
     mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
-
-    # MERGE
-    #spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_CREATE_TABLE"
-    #spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_MERGE"
-    #mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/merge"
-    #spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
-    #mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
 
 done
