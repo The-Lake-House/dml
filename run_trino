@@ -12,22 +12,19 @@ for VARIANT in iceberg_mor delta_no_deletion_vectors; do
     if [[ "$VARIANT" == 'iceberg_mor' ]]; then
         OUTPUT_DIR="${VARIANT}/trino"
         FORMAT=iceberg
-        TABLE_PROPS=''
     elif [[ "$VARIANT" == 'delta_no_deletion_vectors' ]]; then
         OUTPUT_DIR="${VARIANT}/trino"
         FORMAT=delta
-        TABLE_PROPS=''
     else
         OUTPUT_DIR="${VARIANT}/trino"
         FORMAT="$VARIANT"
-        TABLE_PROPS=''
     fi
 
     rm -rf "$OUTPUT_DIR"
     mkdir -p "$OUTPUT_DIR"
 
     SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS $FORMAT.tpch_$FORMAT WITH (location = 's3a://tpch/$FORMAT');"
-    SQL_CREATE_TABLE="CREATE TABLE lineitem $TABLE_PROPS AS SELECT * FROM tpch.tiny.lineitem;"
+    SQL_CREATE_TABLE="CREATE TABLE lineitem AS SELECT * FROM tpch.tiny.lineitem;"
 
     # Setup
     $TRINO_HOME/bin/trino $TRINO_SESSION --execute="$SQL_CREATE_SCHEMA"
