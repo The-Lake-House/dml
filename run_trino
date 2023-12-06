@@ -2,10 +2,13 @@
 
 TRINO_SESSION='--session=hive.hive_storage_format=PARQUET --session=delta.compression_codec=GZIP --session=iceberg.compression_codec=GZIP'
 
-SQL_INSERT='INSERT INTO lineitem SELECT * FROM tpch.tiny.lineitem;'
-SQL_DELETE='DELETE FROM lineitem WHERE l_orderkey = 1;'
-SQL_UPDATE='UPDATE lineitem SET l_quantity = 0.0 WHERE l_orderkey = 3;'
-SQL_DROP_TABLE='DROP TABLE IF EXISTS lineitem;'
+SQL_INSERT='INSERT INTO data (key, value) VALUES (1, 0), (2, 0), (3, 0), (4, 0);'
+SQL_DELETE='DELETE FROM data WHERE key = 1;'
+SQL_UPDATE='UPDATE data SET value = 1 WHERE key = 2;'
+SQL_DROP_TABLE='DROP TABLE IF EXISTS data;'
+SQL_CREATE_TABLE='CREATE TABLE data (key INT, value INT);'
+SQL_DROP_SCHEMA="DROP SCHEMA IF EXISTS dml CASCADE;"
+SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS dml WITH (location = 's3a://dml/');"
 
 for VARIANT in iceberg_mor delta_no_deletion_vectors; do
 
@@ -23,40 +26,40 @@ for VARIANT in iceberg_mor delta_no_deletion_vectors; do
     rm -rf "$OUTPUT_DIR"
     mkdir -p "$OUTPUT_DIR"
 
-    SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS $FORMAT.tpch_$FORMAT WITH (location = 's3a://tpch/$FORMAT');"
-    SQL_CREATE_TABLE="CREATE TABLE lineitem AS SELECT * FROM tpch.tiny.lineitem;"
-
     # Setup
-    $TRINO_HOME/bin/trino $TRINO_SESSION --execute="$SQL_CREATE_SCHEMA"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+    $TRINO_HOME/bin/trino $TRINO_SESSION --catalog="$FORMAT" --execute="$SQL_DROP_SCHEMA"
+    mcli mb -p minio/dml
+    mcli rb --force minio/dml
+    mcli mb minio/dml
+    $TRINO_HOME/bin/trino $TRINO_SESSION --catalog="$FORMAT" --execute="$SQL_CREATE_SCHEMA"
 
     # CREATE
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/create"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/create"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 
     # INSERT
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_INSERT"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/insert"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_INSERT"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/insert"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 
     # DELETE
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DELETE"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/delete"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_INSERT"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DELETE"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/delete"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 
     # UPDATE
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_UPDATE"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/update"
-    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema="tpch_$FORMAT" $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_INSERT"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_UPDATE"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/update"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+
+    # Cleanup
+    $TRINO_HOME/bin/trino $TRINO_SESSION --catalog="$FORMAT" --execute="$SQL_DROP_SCHEMA"
+    mcli rb --force minio/dml
 
 done
-
-# Create Hive table for Hudi in Spark
-SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS hive.tpch_hive WITH (location = 's3a://tpch/hive');"
-$TRINO_HOME/bin/trino $TRINO_SESSION --execute="$SQL_CREATE_SCHEMA"
-$TRINO_HOME/bin/trino --catalog=hive --schema=tpch_hive $TRINO_SESSION --execute="$SQL_DROP_TABLE"
-$TRINO_HOME/bin/trino --catalog=hive --schema=tpch_hive $TRINO_SESSION --execute="$SQL_CREATE_TABLE"

@@ -6,10 +6,14 @@
 
 SPARK_CONF='--conf spark.sql.parquet.compression.codec=gzip'
 
-SQL_INSERT='INSERT INTO lineitem SELECT /* REPARTITION(1) */ * FROM tpch_hive.lineitem;'
-SQL_DELETE='DELETE FROM lineitem WHERE l_orderkey = 1;'
-SQL_UPDATE='UPDATE lineitem SET l_quantity = 0.0 WHERE l_orderkey = 3;'
-SQL_DROP_TABLE='DROP TABLE IF EXISTS lineitem;'
+# The INSERT contains a SELECT because hints are only supported for SELECT
+# statements.
+SQL_INSERT='INSERT INTO data SELECT /*+ REPARTITION(1) */ * FROM VALUES (1, 0), (2, 0), (3, 0), (4, 0);'
+SQL_DELETE='DELETE FROM data WHERE key = 1;'
+SQL_UPDATE='UPDATE data SET value = 1 WHERE key = 2;'
+SQL_DROP_TABLE='DROP TABLE IF EXISTS data;'
+SQL_DROP_SCHEMA="DROP SCHEMA IF EXISTS dml CASCADE;"
+SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS dml LOCATION 's3a://dml/';"
 
 for VARIANT in hudi_cow hudi_mor iceberg_cow iceberg_mor delta_no_deletion_vectors delta_deletion_vectors; do
 
@@ -46,39 +50,46 @@ for VARIANT in hudi_cow hudi_mor iceberg_cow iceberg_mor delta_no_deletion_vecto
     rm -rf "$OUTPUT_DIR"
     mkdir -p "$OUTPUT_DIR"
 
-    SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS tpch_$FORMAT LOCATION 's3a://tpch/$FORMAT';"
-    SQL_CREATE_TABLE="CREATE TABLE lineitem USING $FORMAT $TABLE_PROPS AS SELECT /* REPARTITION(1) */ * FROM tpch_hive.lineitem;"
+    SQL_CREATE_TABLE="CREATE TABLE data (key INT, value INT) USING $FORMAT $TABLE_PROPS;"
 
     # Setup
+    spark-sql-hms-$FORMAT $SPARK_CONF -e "$SQL_DROP_SCHEMA"
+    mcli mb -p minio/dml
+    mcli rb --force minio/dml
+    mcli mb minio/dml
     spark-sql-hms-$FORMAT $SPARK_CONF -e "$SQL_CREATE_SCHEMA"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
-    mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
 
     # CREATE
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_CREATE_TABLE"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/create"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
-    mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_CREATE_TABLE"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/create"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DROP_TABLE"
+    mcli rm -r --force "minio/dml/data/"
 
     # INSERT
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_CREATE_TABLE"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_INSERT"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/insert"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
-    mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_CREATE_TABLE"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_INSERT"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/insert"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DROP_TABLE"
+    mcli rm -r --force "minio/dml/data/"
 
     # DELETE
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_CREATE_TABLE"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DELETE"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/delete"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
-    mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_CREATE_TABLE"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_INSERT"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DELETE"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/delete"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DROP_TABLE"
+    mcli rm -r --force "minio/dml/data/"
 
     # UPDATE
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_CREATE_TABLE"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_UPDATE"
-    mcli cp -r "minio/tpch/$FORMAT/lineitem/" "$OUTPUT_DIR/update"
-    spark-sql-hms-$FORMAT --database "tpch_$FORMAT" $SPARK_CONF -e "$SQL_DROP_TABLE"
-    mcli rm -r --force "minio/tpch/$FORMAT/lineitem/"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_CREATE_TABLE"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_INSERT"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_UPDATE"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/update"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DROP_TABLE"
+    mcli rm -r --force "minio/dml/data/"
+
+    # Cleanup
+    spark-sql-hms-$FORMAT $SPARK_CONF -e "$SQL_DROP_SCHEMA"
+    mcli rb --force minio/dml
 
 done
