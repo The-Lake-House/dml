@@ -15,16 +15,24 @@ SQL_DROP_TABLE='DROP TABLE IF EXISTS data;'
 SQL_DROP_SCHEMA="DROP SCHEMA IF EXISTS dml CASCADE;"
 SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS dml LOCATION 's3a://dml/';"
 
-for VARIANT in hudi_cow hudi_mor iceberg_cow iceberg_mor delta_no_deletion_vectors delta_deletion_vectors; do
+for VARIANT in hudi_cow_insert hudi_cow_bulk_insert hudi_mor_insert hudi_mor_bulk_insert iceberg_cow iceberg_mor delta_no_deletion_vectors delta_deletion_vectors; do
 
-    if [[ "$VARIANT" == 'hudi_cow' ]]; then
+    if [[ "$VARIANT" == 'hudi_cow_insert' ]]; then
         OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=hudi
-        TABLE_PROPS="TBLPROPERTIES (type = 'cow')"
-    elif [[ "$VARIANT" == 'hudi_mor' ]]; then
+        TABLE_PROPS="TBLPROPERTIES (type = 'cow', hoodie.spark.sql.insert.into.operation = 'insert')"
+    elif [[ "$VARIANT" == 'hudi_cow_bulk_insert' ]]; then
         OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=hudi
-        TABLE_PROPS="TBLPROPERTIES (type = 'mor')"
+        TABLE_PROPS="TBLPROPERTIES (type = 'cow', hoodie.spark.sql.insert.into.operation = 'bulk_insert')"
+    elif [[ "$VARIANT" == 'hudi_mor_insert' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
+        FORMAT=hudi
+        TABLE_PROPS="TBLPROPERTIES (type = 'mor', hoodie.spark.sql.insert.into.operation = 'insert')"
+    elif [[ "$VARIANT" == 'hudi_mor_bulk_insert' ]]; then
+        OUTPUT_DIR="${VARIANT}/spark"
+        FORMAT=hudi
+        TABLE_PROPS="TBLPROPERTIES (type = 'mor', hoodie.spark.sql.insert.into.operation = 'bulk_insert')"
     elif [[ "$VARIANT" == 'iceberg_cow' ]]; then
         OUTPUT_DIR="${VARIANT}/spark"
         FORMAT=iceberg
