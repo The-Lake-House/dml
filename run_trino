@@ -44,6 +44,12 @@ for VARIANT in iceberg_mor delta_no_deletion_vectors; do
     mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/insert"
     $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 
+    # INSERT 2x
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_INSERT"
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/insert"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+
     # DELETE
     $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
     $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_INSERT"
