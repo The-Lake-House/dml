@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 TRINO_SESSION='--session=hive.hive_storage_format=PARQUET --session=delta.compression_codec=GZIP --session=iceberg.compression_codec=GZIP'
 
 SQL_INSERT='INSERT INTO data (key, value) VALUES (1, 0), (2, 0), (3, 0), (4, 0);'

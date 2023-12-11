@@ -4,6 +4,8 @@
 # force is used.
 #
 
+set -e
+
 SPARK_CONF='--conf spark.sql.parquet.compression.codec=gzip'
 
 # The INSERT contains a SELECT because hints are only supported for SELECT
