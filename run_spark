@@ -10,7 +10,7 @@ SPARK_CONF='--conf spark.sql.parquet.compression.codec=gzip'
 
 # The INSERT contains a SELECT because hints are only supported for SELECT
 # statements.
-SQL_INSERT='INSERT INTO data SELECT /*+ REPARTITION(1) */ * FROM VALUES (1, 0), (2, 0), (3, 0);'
+SQL_INSERT='INSERT INTO data SELECT /*+ COALESCE(1) */ * FROM VALUES (1, 0), (2, 0), (3, 0);'
 SQL_DROP_TABLE='DROP TABLE IF EXISTS data;'
 SQL_DROP_SCHEMA="DROP SCHEMA IF EXISTS dml CASCADE;"
 SQL_CREATE_SCHEMA="CREATE SCHEMA IF NOT EXISTS dml LOCATION 's3a://dml/';"
@@ -76,8 +76,8 @@ for VARIANT in hudi_cow_insert hudi_cow_bulk_insert hudi_mor_insert hudi_mor_bul
     # INSERTs
     spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_CREATE_TABLE"
     spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_INSERT"
-    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'INSERT INTO data SELECT /*+ REPARTITION(1) */ * FROM VALUES (4, 0), (5, 0), (6, 0);'
-    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'INSERT INTO data SELECT /*+ REPARTITION(1) */ * FROM VALUES (7, 0), (8, 0), (9, 0);'
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'INSERT INTO data SELECT /*+ COALESCE(1) */ * FROM VALUES (4, 0), (5, 0), (6, 0);'
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'INSERT INTO data SELECT /*+ COALESCE(1) */ * FROM VALUES (7, 0), (8, 0), (9, 0);'
     mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/insert"
     spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DROP_TABLE"
     mcli rm -r --force "minio/dml/data/"
