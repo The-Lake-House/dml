@@ -2,7 +2,7 @@
 
 set -e
 
-TRINO_SESSION='--session=hive.hive_storage_format=PARQUET --session=delta.compression_codec=GZIP --session=iceberg.compression_codec=GZIP'
+TRINO_SESSION='--session=iceberg.compression_codec=GZIP --session=delta.compression_codec=GZIP'
 
 SQL_INSERT='INSERT INTO data VALUES (1, 0), (2, 0), (3, 0);'
 SQL_DROP_TABLE='DROP TABLE IF EXISTS data;'
