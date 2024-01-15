@@ -102,6 +102,18 @@ for VARIANT in hudi_cow_insert hudi_cow_bulk_insert hudi_mor_insert hudi_mor_bul
     spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DROP_TABLE"
     mcli rm -r --force "minio/dml/data/"
 
+    # Mixed
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_CREATE_TABLE"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_INSERT"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'DELETE FROM data WHERE key = 1;'
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'DELETE FROM data WHERE key = 2;'
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'INSERT INTO data SELECT /*+ COALESCE(1) */ * FROM VALUES (4, 0), (5, 0), (6, 0);'
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'UPDATE data SET value = 1 WHERE key = 4;'
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e 'UPDATE data SET value = 1 WHERE key = 5;'
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/mixed"
+    spark-sql-hms-$FORMAT --database dml $SPARK_CONF -e "$SQL_DROP_TABLE"
+    mcli rm -r --force "minio/dml/data/"
+
     # Cleanup
     spark-sql-hms-$FORMAT $SPARK_CONF -e "$SQL_DROP_SCHEMA"
     mcli rb --force minio/dml

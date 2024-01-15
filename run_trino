@@ -64,6 +64,17 @@ for VARIANT in iceberg_mor delta_no_deletion_vectors; do
     mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/update"
     $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
 
+    # Mixed
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_CREATE_TABLE"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_INSERT"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute='DELETE FROM data WHERE key = 1;'
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute='DELETE FROM data WHERE key = 2;'
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute='INSERT INTO data VALUES (4, 0), (5, 0), (6, 0)'
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute='UPDATE data SET value = 1 WHERE key = 4;'
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute='UPDATE data SET value = 1 WHERE key = 5;'
+    mcli cp -r "minio/dml/data/" "$OUTPUT_DIR/mixed"
+    $TRINO_HOME/bin/trino --catalog="$FORMAT" --schema=dml $TRINO_SESSION --execute="$SQL_DROP_TABLE"
+
     # Cleanup
     $TRINO_HOME/bin/trino $TRINO_SESSION --catalog="$FORMAT" --execute="$SQL_DROP_SCHEMA"
     mcli rb --force minio/dml
