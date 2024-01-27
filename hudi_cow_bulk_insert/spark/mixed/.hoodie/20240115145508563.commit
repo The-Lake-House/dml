@@ -1,0 +1,39 @@
+{
+  "partitionToWriteStats" : {
+    "" : [ {
+      "fileId" : "597681a6-be36-48cc-b2f1-863a2b56c94c-0",
+      "path" : "597681a6-be36-48cc-b2f1-863a2b56c94c-0_0-6-6_20240115145508563.parquet",
+      "cdcStats" : null,
+      "prevCommit" : "20240115145453499",
+      "numWrites" : 1,
+      "numDeletes" : 1,
+      "numUpdateWrites" : 0,
+      "numInserts" : 0,
+      "totalWriteBytes" : 434522,
+      "totalWriteErrors" : 0,
+      "tempPath" : null,
+      "partitionPath" : "",
+      "totalLogRecords" : 0,
+      "totalLogFilesCompacted" : 0,
+      "totalLogSizeCompacted" : 0,
+      "totalUpdatedRecordsCompacted" : 0,
+      "totalLogBlocks" : 0,
+      "totalCorruptLogBlock" : 0,
+      "totalRollbackBlocks" : 0,
+      "fileSizeInBytes" : 434522,
+      "minEventTime" : null,
+      "maxEventTime" : null,
+      "runtimeStats" : {
+        "totalScanTime" : 0,
+        "totalUpsertTime" : 342,
+        "totalCreateTime" : 0
+      }
+    } ]
+  },
+  "compacted" : false,
+  "extraMetadata" : {
+    "schema" : "{\"type\":\"record\",\"name\":\"data_record\",\"namespace\":\"hoodie.data\",\"fields\":[{\"name\":\"key\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"value\",\"type\":[\"null\",\"int\"],\"default\":null}]}",
+    "_hoodie.spark.sql.writes.prepped" : "true"
+  },
+  "operationType" : "DELETE_PREPPED"
+}

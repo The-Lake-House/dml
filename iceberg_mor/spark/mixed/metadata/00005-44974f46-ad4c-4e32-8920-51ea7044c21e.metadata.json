@@ -1,0 +1,193 @@
+{
+  "format-version" : 2,
+  "table-uuid" : "196c7160-8a06-4dc5-83db-c378d55cbafe",
+  "location" : "s3a://dml//data",
+  "last-sequence-number" : 5,
+  "last-updated-ms" : 1705328205854,
+  "last-column-id" : 2,
+  "current-schema-id" : 0,
+  "schemas" : [ {
+    "type" : "struct",
+    "schema-id" : 0,
+    "fields" : [ {
+      "id" : 1,
+      "name" : "key",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 2,
+      "name" : "value",
+      "required" : false,
+      "type" : "int"
+    } ]
+  } ],
+  "default-spec-id" : 0,
+  "partition-specs" : [ {
+    "spec-id" : 0,
+    "fields" : [ ]
+  } ],
+  "last-partition-id" : 999,
+  "default-sort-order-id" : 0,
+  "sort-orders" : [ {
+    "order-id" : 0,
+    "fields" : [ ]
+  } ],
+  "properties" : {
+    "owner" : "agrueneberg",
+    "write.merge.mode" : "merge-on-read",
+    "write.delete.mode" : "merge-on-read",
+    "write.parquet.compression-codec" : "zstd",
+    "write.update.mode" : "merge-on-read",
+    "compression" : "gzip"
+  },
+  "current-snapshot-id" : 6308299839906156277,
+  "refs" : {
+    "main" : {
+      "snapshot-id" : 6308299839906156277,
+      "type" : "branch"
+    }
+  },
+  "snapshots" : [ {
+    "sequence-number" : 1,
+    "snapshot-id" : 1361142463086036120,
+    "timestamp-ms" : 1705328165746,
+    "summary" : {
+      "operation" : "append",
+      "spark.app.id" : "local-1705328159636",
+      "added-data-files" : "1",
+      "added-records" : "3",
+      "added-files-size" : "663",
+      "changed-partition-count" : "1",
+      "total-records" : "3",
+      "total-files-size" : "663",
+      "total-data-files" : "1",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-1361142463086036120-1-e91da4d7-f6a4-4def-8d1a-9d7b858c9b5b.avro",
+    "schema-id" : 0
+  }, {
+    "sequence-number" : 2,
+    "snapshot-id" : 7157715293968762985,
+    "parent-snapshot-id" : 1361142463086036120,
+    "timestamp-ms" : 1705328175996,
+    "summary" : {
+      "operation" : "overwrite",
+      "spark.app.id" : "local-1705328169059",
+      "added-position-delete-files" : "1",
+      "added-delete-files" : "1",
+      "added-files-size" : "1319",
+      "added-position-deletes" : "1",
+      "changed-partition-count" : "1",
+      "total-records" : "3",
+      "total-files-size" : "1982",
+      "total-data-files" : "1",
+      "total-delete-files" : "1",
+      "total-position-deletes" : "1",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-7157715293968762985-1-77381700-0086-4bed-a4bc-da51d17e56e7.avro",
+    "schema-id" : 0
+  }, {
+    "sequence-number" : 3,
+    "snapshot-id" : 7305593888513663609,
+    "parent-snapshot-id" : 7157715293968762985,
+    "timestamp-ms" : 1705328186160,
+    "summary" : {
+      "operation" : "overwrite",
+      "spark.app.id" : "local-1705328179219",
+      "added-position-delete-files" : "1",
+      "added-delete-files" : "1",
+      "added-files-size" : "1320",
+      "added-position-deletes" : "1",
+      "changed-partition-count" : "1",
+      "total-records" : "3",
+      "total-files-size" : "3302",
+      "total-data-files" : "1",
+      "total-delete-files" : "2",
+      "total-position-deletes" : "2",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-7305593888513663609-1-04d7287d-d967-460f-ba0d-213f0327b276.avro",
+    "schema-id" : 0
+  }, {
+    "sequence-number" : 4,
+    "snapshot-id" : 5394708105215222282,
+    "parent-snapshot-id" : 7305593888513663609,
+    "timestamp-ms" : 1705328195453,
+    "summary" : {
+      "operation" : "append",
+      "spark.app.id" : "local-1705328189359",
+      "added-data-files" : "1",
+      "added-records" : "3",
+      "added-files-size" : "663",
+      "changed-partition-count" : "1",
+      "total-records" : "6",
+      "total-files-size" : "3965",
+      "total-data-files" : "2",
+      "total-delete-files" : "2",
+      "total-position-deletes" : "2",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-5394708105215222282-1-bf39cdaf-126f-4426-b64d-26b2c3e4a382.avro",
+    "schema-id" : 0
+  }, {
+    "sequence-number" : 5,
+    "snapshot-id" : 6308299839906156277,
+    "parent-snapshot-id" : 5394708105215222282,
+    "timestamp-ms" : 1705328205854,
+    "summary" : {
+      "operation" : "overwrite",
+      "spark.app.id" : "local-1705328198713",
+      "added-data-files" : "1",
+      "added-position-delete-files" : "1",
+      "added-delete-files" : "1",
+      "added-records" : "1",
+      "added-files-size" : "1938",
+      "added-position-deletes" : "1",
+      "changed-partition-count" : "1",
+      "total-records" : "7",
+      "total-files-size" : "5903",
+      "total-data-files" : "3",
+      "total-delete-files" : "3",
+      "total-position-deletes" : "3",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-6308299839906156277-1-563a2ce8-69d4-4588-b0d1-b15cad2bc284.avro",
+    "schema-id" : 0
+  } ],
+  "statistics" : [ ],
+  "snapshot-log" : [ {
+    "timestamp-ms" : 1705328165746,
+    "snapshot-id" : 1361142463086036120
+  }, {
+    "timestamp-ms" : 1705328175996,
+    "snapshot-id" : 7157715293968762985
+  }, {
+    "timestamp-ms" : 1705328186160,
+    "snapshot-id" : 7305593888513663609
+  }, {
+    "timestamp-ms" : 1705328195453,
+    "snapshot-id" : 5394708105215222282
+  }, {
+    "timestamp-ms" : 1705328205854,
+    "snapshot-id" : 6308299839906156277
+  } ],
+  "metadata-log" : [ {
+    "timestamp-ms" : 1705328155365,
+    "metadata-file" : "s3a://dml/data/metadata/00000-4b2f972e-f767-4cfa-a007-66f1d79d9eea.metadata.json"
+  }, {
+    "timestamp-ms" : 1705328165746,
+    "metadata-file" : "s3a://dml/data/metadata/00001-c171177c-641b-4b4f-9964-33ecf5d63128.metadata.json"
+  }, {
+    "timestamp-ms" : 1705328175996,
+    "metadata-file" : "s3a://dml/data/metadata/00002-2b108ed7-14b7-4c70-91c8-cb577cd905d9.metadata.json"
+  }, {
+    "timestamp-ms" : 1705328186160,
+    "metadata-file" : "s3a://dml/data/metadata/00003-87a43c28-d84c-4075-84be-e1b2bcdcda8a.metadata.json"
+  }, {
+    "timestamp-ms" : 1705328195453,
+    "metadata-file" : "s3a://dml/data/metadata/00004-c98211eb-ec4a-4356-8944-6c741937d89e.metadata.json"
+  } ]
+}

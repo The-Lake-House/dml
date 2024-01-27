@@ -1,0 +1,46 @@
+{
+  "partitionToWriteStats" : {
+    "" : [ {
+      "fileId" : "cbeb19db-5a28-4f7e-8a1e-19c1252ea066-0",
+      "path" : ".cbeb19db-5a28-4f7e-8a1e-19c1252ea066-0_20240115145918533.log.1_0-6-6",
+      "cdcStats" : null,
+      "prevCommit" : "20240115145918533",
+      "numWrites" : 1,
+      "numDeletes" : 0,
+      "numUpdateWrites" : 1,
+      "numInserts" : 0,
+      "totalWriteBytes" : 795,
+      "totalWriteErrors" : 0,
+      "tempPath" : null,
+      "partitionPath" : "",
+      "totalLogRecords" : 0,
+      "totalLogFilesCompacted" : 0,
+      "totalLogSizeCompacted" : 0,
+      "totalUpdatedRecordsCompacted" : 0,
+      "totalLogBlocks" : 0,
+      "totalCorruptLogBlock" : 0,
+      "totalRollbackBlocks" : 0,
+      "fileSizeInBytes" : 795,
+      "minEventTime" : null,
+      "maxEventTime" : null,
+      "runtimeStats" : {
+        "totalScanTime" : 0,
+        "totalUpsertTime" : 185,
+        "totalCreateTime" : 0
+      },
+      "logVersion" : 1,
+      "logOffset" : 0,
+      "baseFile" : "cbeb19db-5a28-4f7e-8a1e-19c1252ea066-0_0-13-12_20240115145918533.parquet",
+      "logFiles" : [ ".cbeb19db-5a28-4f7e-8a1e-19c1252ea066-0_20240115145918533.log.1_0-6-6" ],
+      "recordsStats" : {
+        "val" : null
+      }
+    } ]
+  },
+  "compacted" : false,
+  "extraMetadata" : {
+    "schema" : "{\"type\":\"record\",\"name\":\"data_record\",\"namespace\":\"hoodie.data\",\"fields\":[{\"name\":\"key\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"value\",\"type\":[\"null\",\"int\"],\"default\":null}]}",
+    "_hoodie.spark.sql.writes.prepped" : "true"
+  },
+  "operationType" : "UPSERT_PREPPED"
+}

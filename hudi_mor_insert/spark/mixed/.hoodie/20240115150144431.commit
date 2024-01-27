@@ -1,0 +1,66 @@
+{
+  "partitionToWriteStats" : {
+    "" : [ {
+      "fileId" : "847039f3-fe6e-444d-b0f2-22e41f78da6c-0",
+      "path" : "847039f3-fe6e-444d-b0f2-22e41f78da6c-0_0-18-21_20240115150144431.parquet",
+      "cdcStats" : null,
+      "prevCommit" : "20240115150035527",
+      "numWrites" : 1,
+      "numDeletes" : 2,
+      "numUpdateWrites" : 0,
+      "numInserts" : 0,
+      "totalWriteBytes" : 434533,
+      "totalWriteErrors" : 0,
+      "tempPath" : null,
+      "partitionPath" : "",
+      "totalLogRecords" : 0,
+      "totalLogFilesCompacted" : 2,
+      "totalLogSizeCompacted" : 1418,
+      "totalUpdatedRecordsCompacted" : 2,
+      "totalLogBlocks" : 2,
+      "totalCorruptLogBlock" : 0,
+      "totalRollbackBlocks" : 0,
+      "fileSizeInBytes" : 434533,
+      "minEventTime" : null,
+      "maxEventTime" : null,
+      "runtimeStats" : {
+        "totalScanTime" : 21,
+        "totalUpsertTime" : 0,
+        "totalCreateTime" : 0
+      }
+    }, {
+      "fileId" : "589a58d8-9cb0-435d-bf84-dfb7fabcd2aa-0",
+      "path" : "589a58d8-9cb0-435d-bf84-dfb7fabcd2aa-0_1-18-22_20240115150144431.parquet",
+      "cdcStats" : null,
+      "prevCommit" : "20240115150122494",
+      "numWrites" : 3,
+      "numDeletes" : 0,
+      "numUpdateWrites" : 1,
+      "numInserts" : 0,
+      "totalWriteBytes" : 434649,
+      "totalWriteErrors" : 0,
+      "tempPath" : null,
+      "partitionPath" : "",
+      "totalLogRecords" : 1,
+      "totalLogFilesCompacted" : 1,
+      "totalLogSizeCompacted" : 795,
+      "totalUpdatedRecordsCompacted" : 1,
+      "totalLogBlocks" : 1,
+      "totalCorruptLogBlock" : 0,
+      "totalRollbackBlocks" : 0,
+      "fileSizeInBytes" : 434649,
+      "minEventTime" : null,
+      "maxEventTime" : null,
+      "runtimeStats" : {
+        "totalScanTime" : 13,
+        "totalUpsertTime" : 0,
+        "totalCreateTime" : 0
+      }
+    } ]
+  },
+  "compacted" : true,
+  "extraMetadata" : {
+    "schema" : "{\"type\":\"record\",\"name\":\"data_record\",\"namespace\":\"hoodie.data\",\"fields\":[{\"name\":\"key\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"value\",\"type\":[\"null\",\"int\"],\"default\":null}]}"
+  },
+  "operationType" : "COMPACT"
+}

@@ -1,0 +1,69 @@
+{
+  "format-version" : 2,
+  "table-uuid" : "6a1fb68b-df50-4e4b-b049-b1d5e5417a60",
+  "location" : "s3a://dml/data",
+  "last-sequence-number" : 1,
+  "last-updated-ms" : 1705348778384,
+  "last-column-id" : 2,
+  "current-schema-id" : 0,
+  "schemas" : [ {
+    "type" : "struct",
+    "schema-id" : 0,
+    "fields" : [ {
+      "id" : 1,
+      "name" : "key",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 2,
+      "name" : "value",
+      "required" : false,
+      "type" : "int"
+    } ]
+  } ],
+  "default-spec-id" : 0,
+  "partition-specs" : [ {
+    "spec-id" : 0,
+    "fields" : [ ]
+  } ],
+  "last-partition-id" : 999,
+  "default-sort-order-id" : 0,
+  "sort-orders" : [ {
+    "order-id" : 0,
+    "fields" : [ ]
+  } ],
+  "properties" : {
+    "write.format.default" : "PARQUET"
+  },
+  "current-snapshot-id" : 2624349370098983452,
+  "refs" : {
+    "main" : {
+      "snapshot-id" : 2624349370098983452,
+      "type" : "branch"
+    }
+  },
+  "snapshots" : [ {
+    "sequence-number" : 1,
+    "snapshot-id" : 2624349370098983452,
+    "timestamp-ms" : 1705348778384,
+    "summary" : {
+      "operation" : "append",
+      "trino_query_id" : "20240115_195938_00002_gkqxu",
+      "changed-partition-count" : "0",
+      "total-records" : "0",
+      "total-files-size" : "0",
+      "total-data-files" : "0",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-2624349370098983452-1-a68426cd-dbc1-4251-89a9-24bfefc26734.avro",
+    "schema-id" : 0
+  } ],
+  "statistics" : [ ],
+  "snapshot-log" : [ {
+    "timestamp-ms" : 1705348778384,
+    "snapshot-id" : 2624349370098983452
+  } ],
+  "metadata-log" : [ ]
+}

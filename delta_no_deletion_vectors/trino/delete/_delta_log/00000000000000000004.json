@@ -1,0 +1,2 @@
+{"commitInfo":{"version":4,"timestamp":1705348832115,"userId":"agrueneberg","userName":"agrueneberg","operation":"MERGE","operationParameters":{"queryId":"20240115_200031_00043_gkqxu"},"clusterId":"trino-430-trino","readVersion":3,"isolationLevel":"WriteSerializable","isBlindAppend":true}}
+{"remove":{"path":"20240115_200030_00042_gkqxu_0f46b77e-7140-4344-9dcd-94969a2057a7","deletionTimestamp":1705348832132,"dataChange":true}}

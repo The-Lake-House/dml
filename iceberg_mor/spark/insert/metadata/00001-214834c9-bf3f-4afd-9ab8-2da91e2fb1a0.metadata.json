@@ -1,0 +1,80 @@
+{
+  "format-version" : 2,
+  "table-uuid" : "c605c40d-8993-4791-a4a9-2d13161e7a29",
+  "location" : "s3a://dml//data",
+  "last-sequence-number" : 1,
+  "last-updated-ms" : 1705328007276,
+  "last-column-id" : 2,
+  "current-schema-id" : 0,
+  "schemas" : [ {
+    "type" : "struct",
+    "schema-id" : 0,
+    "fields" : [ {
+      "id" : 1,
+      "name" : "key",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 2,
+      "name" : "value",
+      "required" : false,
+      "type" : "int"
+    } ]
+  } ],
+  "default-spec-id" : 0,
+  "partition-specs" : [ {
+    "spec-id" : 0,
+    "fields" : [ ]
+  } ],
+  "last-partition-id" : 999,
+  "default-sort-order-id" : 0,
+  "sort-orders" : [ {
+    "order-id" : 0,
+    "fields" : [ ]
+  } ],
+  "properties" : {
+    "owner" : "agrueneberg",
+    "write.merge.mode" : "merge-on-read",
+    "write.delete.mode" : "merge-on-read",
+    "write.parquet.compression-codec" : "zstd",
+    "write.update.mode" : "merge-on-read",
+    "compression" : "gzip"
+  },
+  "current-snapshot-id" : 3497448388824915451,
+  "refs" : {
+    "main" : {
+      "snapshot-id" : 3497448388824915451,
+      "type" : "branch"
+    }
+  },
+  "snapshots" : [ {
+    "sequence-number" : 1,
+    "snapshot-id" : 3497448388824915451,
+    "timestamp-ms" : 1705328007276,
+    "summary" : {
+      "operation" : "append",
+      "spark.app.id" : "local-1705328001154",
+      "added-data-files" : "1",
+      "added-records" : "3",
+      "added-files-size" : "663",
+      "changed-partition-count" : "1",
+      "total-records" : "3",
+      "total-files-size" : "663",
+      "total-data-files" : "1",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-3497448388824915451-1-3a24b2b0-34de-4530-9b48-14c5e759c4d7.avro",
+    "schema-id" : 0
+  } ],
+  "statistics" : [ ],
+  "snapshot-log" : [ {
+    "timestamp-ms" : 1705328007276,
+    "snapshot-id" : 3497448388824915451
+  } ],
+  "metadata-log" : [ {
+    "timestamp-ms" : 1705327996914,
+    "metadata-file" : "s3a://dml/data/metadata/00000-3952cc56-c324-4453-8266-135af872c721.metadata.json"
+  } ]
+}

@@ -1,0 +1,3 @@
+{"commitInfo":{"version":3,"timestamp":1705348844594,"userId":"agrueneberg","userName":"agrueneberg","operation":"MERGE","operationParameters":{"queryId":"20240115_200044_00054_gkqxu"},"clusterId":"trino-430-trino","readVersion":2,"isolationLevel":"WriteSerializable","isBlindAppend":true}}
+{"remove":{"path":"20240115_200043_00053_gkqxu_62ac1d48-6b59-402f-bf14-e2484cfd51b8","deletionTimestamp":1705348844607,"dataChange":true}}
+{"add":{"path":"20240115_200044_00054_gkqxu_e6e2f55e-1538-4b32-bdf6-f6ed5a617ed5","partitionValues":{},"size":334,"modificationTime":1705348844569,"dataChange":true,"stats":"{\"numRecords\":1,\"minValues\":{\"key\":3,\"value\":0},\"maxValues\":{\"key\":3,\"value\":0},\"nullCount\":{\"key\":0,\"value\":0}}","tags":{}}}

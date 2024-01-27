@@ -1,0 +1,38 @@
+{
+  "partitionToWriteStats" : {
+    "" : [ {
+      "fileId" : "036c2c15-38e8-4010-8db2-c41535baae30-0",
+      "path" : "036c2c15-38e8-4010-8db2-c41535baae30-0_0-4-4_20240115144537736.parquet",
+      "cdcStats" : null,
+      "prevCommit" : "20240115144522651",
+      "numWrites" : 9,
+      "numDeletes" : 0,
+      "numUpdateWrites" : 0,
+      "numInserts" : 3,
+      "totalWriteBytes" : 434718,
+      "totalWriteErrors" : 0,
+      "tempPath" : null,
+      "partitionPath" : "",
+      "totalLogRecords" : 0,
+      "totalLogFilesCompacted" : 0,
+      "totalLogSizeCompacted" : 0,
+      "totalUpdatedRecordsCompacted" : 0,
+      "totalLogBlocks" : 0,
+      "totalCorruptLogBlock" : 0,
+      "totalRollbackBlocks" : 0,
+      "fileSizeInBytes" : 434718,
+      "minEventTime" : null,
+      "maxEventTime" : null,
+      "runtimeStats" : {
+        "totalScanTime" : 0,
+        "totalUpsertTime" : 468,
+        "totalCreateTime" : 0
+      }
+    } ]
+  },
+  "compacted" : false,
+  "extraMetadata" : {
+    "schema" : "{\"type\":\"record\",\"name\":\"data_record\",\"namespace\":\"hoodie.data\",\"fields\":[{\"name\":\"key\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"value\",\"type\":[\"null\",\"int\"],\"default\":null}]}"
+  },
+  "operationType" : "INSERT"
+}

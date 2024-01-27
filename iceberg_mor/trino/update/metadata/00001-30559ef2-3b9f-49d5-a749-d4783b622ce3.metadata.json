@@ -1,0 +1,96 @@
+{
+  "format-version" : 2,
+  "table-uuid" : "fc98517e-4f0f-4af3-97cf-250270c26a50",
+  "location" : "s3a://dml/data",
+  "last-sequence-number" : 2,
+  "last-updated-ms" : 1705348797469,
+  "last-column-id" : 2,
+  "current-schema-id" : 0,
+  "schemas" : [ {
+    "type" : "struct",
+    "schema-id" : 0,
+    "fields" : [ {
+      "id" : 1,
+      "name" : "key",
+      "required" : false,
+      "type" : "int"
+    }, {
+      "id" : 2,
+      "name" : "value",
+      "required" : false,
+      "type" : "int"
+    } ]
+  } ],
+  "default-spec-id" : 0,
+  "partition-specs" : [ {
+    "spec-id" : 0,
+    "fields" : [ ]
+  } ],
+  "last-partition-id" : 999,
+  "default-sort-order-id" : 0,
+  "sort-orders" : [ {
+    "order-id" : 0,
+    "fields" : [ ]
+  } ],
+  "properties" : {
+    "write.format.default" : "PARQUET"
+  },
+  "current-snapshot-id" : 8043887113747125493,
+  "refs" : {
+    "main" : {
+      "snapshot-id" : 8043887113747125493,
+      "type" : "branch"
+    }
+  },
+  "snapshots" : [ {
+    "sequence-number" : 1,
+    "snapshot-id" : 2367892098232526019,
+    "timestamp-ms" : 1705348796264,
+    "summary" : {
+      "operation" : "append",
+      "trino_query_id" : "20240115_195956_00015_gkqxu",
+      "changed-partition-count" : "0",
+      "total-records" : "0",
+      "total-files-size" : "0",
+      "total-data-files" : "0",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-2367892098232526019-1-52615ecc-5578-416e-a5de-c5da0e22c51e.avro",
+    "schema-id" : 0
+  }, {
+    "sequence-number" : 2,
+    "snapshot-id" : 8043887113747125493,
+    "parent-snapshot-id" : 2367892098232526019,
+    "timestamp-ms" : 1705348797469,
+    "summary" : {
+      "operation" : "append",
+      "trino_query_id" : "20240115_195957_00016_gkqxu",
+      "added-data-files" : "1",
+      "added-records" : "3",
+      "added-files-size" : "385",
+      "changed-partition-count" : "1",
+      "total-records" : "3",
+      "total-files-size" : "385",
+      "total-data-files" : "1",
+      "total-delete-files" : "0",
+      "total-position-deletes" : "0",
+      "total-equality-deletes" : "0"
+    },
+    "manifest-list" : "s3a://dml/data/metadata/snap-8043887113747125493-1-58cf8d0a-230e-4d9a-bc15-a8198984a1ea.avro",
+    "schema-id" : 0
+  } ],
+  "statistics" : [ ],
+  "snapshot-log" : [ {
+    "timestamp-ms" : 1705348796264,
+    "snapshot-id" : 2367892098232526019
+  }, {
+    "timestamp-ms" : 1705348797469,
+    "snapshot-id" : 8043887113747125493
+  } ],
+  "metadata-log" : [ {
+    "timestamp-ms" : 1705348796264,
+    "metadata-file" : "s3a://dml/data/metadata/00000-4c296bef-d624-4ebb-81bb-579d5267fe97.metadata.json"
+  } ]
+}
